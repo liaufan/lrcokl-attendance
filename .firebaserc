@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "default": "lrcokl-6dee6",
+    "main": "lrcokl-6dee6",
+    "attendance": "lrcokl-6dee6"
+  },
+  "targets": {
+    "lrcokl-6dee6": {
+      "hosting": {
+        "main": [
+          "lrcokl-6dee6"
+        ]
+      }
+    }
+  }
+}
