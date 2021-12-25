@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:awesome_dropdown/awesome_dropdown.dart';
+import 'package:lrcokl/ui/attendance.component.dart';
 
 class Home extends StatelessWidget {
-  const Home({
+  Home({
     Key? key,
   }) : super(key: key);
 
@@ -17,19 +19,27 @@ class Home extends StatelessWidget {
           height: 110,
         ),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.menu),
-            tooltip: '',
-            onPressed: () {},
+          TextButton(
+              onPressed: () {},
+              child: const Text(
+                "Eng",
+                style: TextStyle(color: Colors.blue),
+              )),
+          Container(
+            margin: const EdgeInsets.only(top: 30, bottom: 30),
+            height: 5,
+            width: 1,
+            color: Colors.black,
           ),
+          TextButton(
+              onPressed: () {},
+              child: const Text(
+                "中",
+                style: TextStyle(color: Colors.black),
+              )),
         ],
       ),
-      body: const Center(
-        child: Text(
-          'Attendance Page',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
+      body: AttendanceComponent(title: "Title"),
     );
   }
 }

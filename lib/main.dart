@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:lrcokl/ui/home.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'get_bindings.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyBj8ZUjuoTvqxltfPx1svADCtMZ05FKVLY",
+      appId: "1:1081503252980:web:a071e98e67212b9dc3b9a1",
+      messagingSenderId: "1081503252980",
+      projectId: "lrcokl-6dee6",
+      storageBucket: "lrcokl-6dee6.appspot.com",
+      measurementId: "G-QCV9M16H1C",
+    ),
+  );
+  GetInitializer().dependencies();
+  await Future.delayed(const Duration(milliseconds: 500));
   runApp(const MyApp());
 }
 
@@ -16,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: white,
       ),
-      home: const Home(),
+      home: Home(),
       // debugShowCheckedModeBanner: false,
     );
   }
