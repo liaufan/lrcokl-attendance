@@ -5,7 +5,7 @@ import 'package:jiffy/jiffy.dart';
 class AttendanceController extends GetxController {
   final bool isPanDown = false;
   final List<String> types = [];
-  String selectedType = "";
+  RxString selectedType = "".obs;
   RxList members = [].obs;
 
   bool isAscending = true;
@@ -18,13 +18,16 @@ class AttendanceController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    types.clear();
+    dates.clear();
+    members.clear();
 
     typesRef.get().then((value) {
       value.docs.forEach((doc) {
         types.add(doc.data()["name"]);
       });
 
-      selectedType = types[0];
+      selectedType.value = types[0];
     });
 
     eventsRef.get().then((value) {
@@ -62,6 +65,8 @@ class AttendanceController extends GetxController {
         }
       });
     });
+
+    print(selectedType.value);
   }
 
   reloadMembers() {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lrcokl/controllers/attendance.controller.dart';
+import 'package:lrcokl/controllers/update.comtroller.dart';
 import 'package:lrcokl/helpers/dropdown.helper.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 
@@ -14,6 +15,7 @@ class AttendanceComponent extends StatefulWidget {
 
 class _AttendanceComponentState extends State<AttendanceComponent> {
   final AttendanceController attendanceController = Get.find();
+  final UpdateController updateController = Get.find();
   HDTRefreshController _hdtRefreshController = HDTRefreshController();
 
   @override
@@ -29,26 +31,26 @@ class _AttendanceComponentState extends State<AttendanceComponent> {
       Row(children: [
         SizedBox(
           width: 200,
-          child: AwesomeDropDown(
-            isPanDown: attendanceController.isPanDown,
-            dropDownList: attendanceController.types,
-            dropDownIcon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.grey,
-              size: 23,
-            ),
-            selectedItem: attendanceController.selectedType,
-            onDropDownItemClick: (selectedType) {
-              attendanceController.selectedType = selectedType;
-              attendanceController.reloadMembers();
-            },
-            dropStateChanged: (isOpened) {
-              // _isDropDownOpened = isOpened;
-              // if (!isOpened) {
-              //   _isBackPressedOrTouchedOutSide = false;
-              // }
-            },
-          ),
+          child: Obx(() => AwesomeDropDown(
+                isPanDown: attendanceController.isPanDown,
+                dropDownList: attendanceController.types,
+                dropDownIcon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.grey,
+                  size: 23,
+                ),
+                selectedItem: attendanceController.selectedType.value,
+                onDropDownItemClick: (selectedType) {
+                  attendanceController.selectedType.value = selectedType;
+                  attendanceController.reloadMembers();
+                },
+                dropStateChanged: (isOpened) {
+                  // _isDropDownOpened = isOpened;
+                  // if (!isOpened) {
+                  //   _isBackPressedOrTouchedOutSide = false;
+                  // }
+                },
+              )),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 15, top: 10),
@@ -56,7 +58,12 @@ class _AttendanceComponentState extends State<AttendanceComponent> {
             width: 250,
             height: 50,
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  updateController.onInit();
+                  Get.toNamed('/update')!.then((value) {
+                    attendanceController.onInit();
+                  });
+                },
                 child: Text("Update My Attendance"),
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -67,44 +74,47 @@ class _AttendanceComponentState extends State<AttendanceComponent> {
         )
       ]),
       Spacer(),
-      SizedBox(
-        height: size.height * 0.70,
-        child: Obx(() => HorizontalDataTable(
-              leftHandSideColumnWidth: 120,
-              rightHandSideColumnWidth:
-                  100.0 * (attendanceController.dates.length + 1),
-              isFixedHeader: true,
-              headerWidgets: _getTitleWidget(),
-              leftSideItemBuilder: _generateFirstColumnRow,
-              rightSideItemBuilder: _generateRightHandSideColumnRow,
-              itemCount: attendanceController.members.length,
-              rowSeparatorWidget: const Divider(
-                color: Colors.black54,
-                height: 1.0,
-                thickness: 0.0,
-              ),
-              leftHandSideColBackgroundColor: Color(0xFFFFFFFF),
-              rightHandSideColBackgroundColor: Color(0xFFFFFFFF),
-              verticalScrollbarStyle: const ScrollbarStyle(
-                isAlwaysShown: true,
-                thickness: 4.0,
-                radius: Radius.circular(5.0),
-              ),
-              horizontalScrollbarStyle: const ScrollbarStyle(
-                isAlwaysShown: true,
-                thickness: 4.0,
-                radius: Radius.circular(5.0),
-              ),
-              enablePullToRefresh: true,
-              refreshIndicator: const WaterDropHeader(),
-              refreshIndicatorHeight: 60,
-              onRefresh: () async {
-                //Do sth
-                await Future.delayed(const Duration(milliseconds: 500));
-                _hdtRefreshController.refreshCompleted();
-              },
-              htdRefreshController: _hdtRefreshController,
-            )),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          height: size.height * 0.72,
+          child: Obx(() => HorizontalDataTable(
+                leftHandSideColumnWidth: 120,
+                rightHandSideColumnWidth:
+                    100.0 * (attendanceController.dates.length + 1),
+                isFixedHeader: true,
+                headerWidgets: _getTitleWidget(),
+                leftSideItemBuilder: _generateFirstColumnRow,
+                rightSideItemBuilder: _generateRightHandSideColumnRow,
+                itemCount: attendanceController.members.length,
+                rowSeparatorWidget: const Divider(
+                  color: Colors.black54,
+                  height: 1.0,
+                  thickness: 0.0,
+                ),
+                leftHandSideColBackgroundColor: Color(0xFFFFFFFF),
+                rightHandSideColBackgroundColor: Color(0xFFFFFFFF),
+                verticalScrollbarStyle: const ScrollbarStyle(
+                  isAlwaysShown: true,
+                  thickness: 4.0,
+                  radius: Radius.circular(5.0),
+                ),
+                horizontalScrollbarStyle: const ScrollbarStyle(
+                  isAlwaysShown: true,
+                  thickness: 4.0,
+                  radius: Radius.circular(5.0),
+                ),
+                enablePullToRefresh: true,
+                refreshIndicator: const WaterDropHeader(),
+                refreshIndicatorHeight: 60,
+                onRefresh: () async {
+                  //Do sth
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  _hdtRefreshController.refreshCompleted();
+                },
+                htdRefreshController: _hdtRefreshController,
+              )),
+        ),
       ),
     ]);
   }

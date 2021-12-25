@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lrcokl/ui/home.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:lrcokl/ui/update.page.dart';
 import 'get_bindings.dart';
 
 void main() async {
@@ -25,13 +27,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Attendance LRCO',
       theme: ThemeData(
         primarySwatch: white,
       ),
       home: Home(),
       // debugShowCheckedModeBanner: false,
+      getPages: [
+        GetPage(name: "/", page: () => Home()),
+        GetPage(name: "/update", page: () => UpdatePage()),
+      ],
     );
   }
 }
