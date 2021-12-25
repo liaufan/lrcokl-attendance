@@ -54,29 +54,44 @@ class _UpdateComponentState extends State<UpdateComponent> {
   Widget _getAttendanceSwitchers() {
     List<Widget> switches = [];
     for (int i = 0; i < updateController.attendances.length; i++) {
-      switches.add(Obx(() => Row(
-            children: [
-              Text(Jiffy(updateController.attendances[i].date).yMMMd),
-              FlutterSwitch(
-                width: 60.0,
-                height: 30.0,
-                valueFontSize: 12.0,
-                toggleSize: 22.0,
-                value: updateController.attendances[i].present.value,
-                borderRadius: 30.0,
-                padding: 4.0,
-                showOnOff: true,
-                onToggle: (val) {
-                  updateController.toggleAttendance(
-                      updateController.attendances[i].date, val);
-                  updateController.attendances[i].present.value = val;
-                },
-              ),
-            ],
+      switches.add(Obx(() => Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Text(
+                  Jiffy(updateController.attendances[i].date).yMMMd,
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                FlutterSwitch(
+                  activeText: "Present",
+                  inactiveText: "Absent",
+                  activeColor: Colors.green,
+                  width: 80.0,
+                  height: 30.0,
+                  valueFontSize: 12.0,
+                  toggleSize: 22.0,
+                  value: updateController.attendances[i].present.value,
+                  borderRadius: 30.0,
+                  padding: 4.0,
+                  showOnOff: true,
+                  onToggle: (val) {
+                    updateController.toggleAttendance(
+                        updateController.attendances[i].date, val);
+                    updateController.attendances[i].present.value = val;
+                  },
+                ),
+              ],
+            ),
           )));
     }
-    return Column(
-      children: switches,
+    return Padding(
+      padding: EdgeInsets.only(left: 30),
+      child: Column(
+        children: switches,
+      ),
     );
   }
 }
